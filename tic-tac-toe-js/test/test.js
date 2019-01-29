@@ -157,7 +157,7 @@ describe("TicTacToe", function () {
     });
   });
 
-  xdescribe("5 x 5 board", function () {
+  describe("5 x 5 board", function () {
     it("returns the correct winner when match found on a row", function () {
       var board = [
         ["o", "o", "o", "o", "o"],
@@ -207,7 +207,7 @@ describe("TicTacToe", function () {
     });
   });
 
-  xdescribe("unfinished", function () {
+  describe("unfinished", function () {
     it("returns 'unfinished' when the board not finished yet", function () {
       var board = [
         ["o", "x", "o"],
@@ -219,4 +219,3 @@ describe("TicTacToe", function () {
     });
   });
 });
-

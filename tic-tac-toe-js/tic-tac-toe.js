@@ -1,83 +1,94 @@
-var TicTacToe = function(board) {
-  this.board = board;
-};
-
-TicTacToe.prototype.winner = function() {
-  var row1 = this.board[0];
-  var row2 = this.board[1];
-  var row3 = this.board[2];
-
-  // row checks
-
-  if (row1[0] == "o" && row1[1] == "o" && row1[2] == "o") {
-    return "o";
+class TicTacToe {
+  constructor(board) {
+    this.board = board
   }
 
-  if (row2[0] == "o" && row2[1] == "o" && row2[2] == "o") {
-    return "o"
+  getWinningValue(data) {
+    for (let i = 0; i < data.length; i++) {
+      const initialValue = data[i][0]
+      const isMatch = data[i].every(function(currentValue) {
+        return initialValue === currentValue
+      })
+
+      if (isMatch && initialValue !== ' ') {
+        return initialValue
+      }
+    }
   }
 
-  if (row3[0] == "o" && row3[1] == "o" && row3[2] == "o") {
-    return "o"
+  checkRows() {
+    return this.getWinningValue(this.board)
   }
 
-  if (row1[0] == "x" && row1[1] == "x" && row1[2] == "x") {
-    return "x"
+  checkColumns() {
+    // Transform columns into their own arrays
+    const transformedColumns = []
+    const boardLength = this.board.length
+    for (let i = 0; i < boardLength; i++) {
+      for (let j = 0; j < boardLength; j++) {
+        if (transformedColumns[j]) {
+          transformedColumns[j].push(this.board[i][j])
+        } else {
+          transformedColumns.push([this.board[i][j]])
+        }
+      }
+    }
+
+    return this.getWinningValue(transformedColumns)
   }
 
-  if (row2[0] == "x" && row2[1] == "x" && row2[2] == "x") {
-    return "x"
+  checkDiagonal() {
+    const boardLength = this.board.length
+    const transformedData = [[], []] // Since there will always be only two diagonals
+
+    // Get first diagonal line
+    for (let i = 0; i < boardLength; i++) {
+      transformedData[0].push(this.board[i][i])
+    }
+
+    // Reverses the board to get the other diagonal line
+    const reversedBoard = this.board.reverse()
+    for (let i = 0; i < boardLength; i++) {
+      transformedData[1].push(reversedBoard[i][i])
+    }
+
+    return this.getWinningValue(transformedData)
   }
 
-  if (row3[0] == "x" && row3[1] == "x" && row3[2] == "x") {
-    return "x"
+  checkUnfinished() {
+    let flattenedArray = this.board.reduce(function(accumulator, currentValue) {
+      return accumulator.concat(currentValue)
+    })
+    if (flattenedArray.includes(' ')) {
+      return 'unfinished'
+    }
   }
 
-  // column checks
+  winner() {
+    // row checks
+    const rowWinner = this.checkRows()
+    if (rowWinner) {
+      return rowWinner
+    }
 
-  if (row1[0] == "o" && row2[0] == "o" && row3[0] == "o") {
-    return "o"
+    // column checks
+    const columnWinner = this.checkColumns()
+    if (columnWinner) {
+      return columnWinner
+    }
+
+    // diagonal check
+    const diagonalWinner = this.checkDiagonal()
+    if (diagonalWinner) {
+      return this.checkDiagonal()
+    }
+
+    if (this.checkUnfinished()) {
+      return this.checkUnfinished()
+    }
+
+    return 'draw'
   }
+}
 
-  if (row1[1] == "o" && row2[1] == "o" && row3[1] == "o") {
-    return "o"
-  }
-
-  if (row1[2] == "o" && row2[2] == "o" && row3[2] == "o") {
-    return "o"
-  }
-
-  if (row1[0] == "x" && row2[0] == "x" && row3[0] == "x") {
-    return "x"
-  }
-
-  if (row1[1] == "x" && row2[1] == "x" && row3[1] == "x") {
-    return "x"
-  }
-
-  if (row1[2] == "x" && row2[2] == "x" && row3[2] == "x") {
-    return "x"
-  }
-
-  // diagonal checks
-
-  if (row1[0] == "o" && row2[1] == "o" && row3[2] == "o") {
-    return "o"
-  }
-
-  if (row1[2] == "o" && row2[1] == "o" && row3[0] == "o") {
-    return "o"
-  }
-
-  if (row1[0] == "x" && row2[1] == "x" && row3[2] == "x") {
-    return "x"
-  }
-
-  if (row1[2] == "x" && row2[1] == "x" && row3[0] == "x") {
-    return "x"
-  }
-
-  return "draw"
-};
-
-module.exports = TicTacToe;
+module.exports = TicTacToe

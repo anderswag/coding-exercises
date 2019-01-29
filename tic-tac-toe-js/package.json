@@ -10,5 +10,8 @@
   "license": "ISC",
   "devDependencies": {
     "mocha": "^3.2.0"
+  },
+  "dependencies": {
+    "prettier": "^1.16.1"
   }
 }
